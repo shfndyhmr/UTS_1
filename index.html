@@ -195,16 +195,10 @@
       </div>
 
       <!-- Peta -->
-
-        <h2><b>Keluarga Mahasiswa Teknik Geodesi (KMTG)</b></h2>
-        <p style="text-align: justify; font-family: Segoe UI">
-          KMTG adalah organisasi kemahasiswaan di lingkungan Departemen Teknik Geodesi UGM. KMTG mewadahi berbagai kegiatan akademik dan non-akademik, mulai dari himpunan, komunitas, hingga acara tahunan seperti Geospasial Fair. Tujuan utamanya adalah membentuk mahasiswa Geodesi yang aktif, berprestasi, dan berkontribusi bagi masyarakat.
-        </p>
-        <p style="text-align: justify; font-family: Segoe UI">
-          Selain itu, KMTG juga menjadi tempat saling mendukung antar mahasiswa lintas angkatan, mempererat solidaritas, dan menjadi sarana belajar di luar kelas.
-        </p>
-      
-    </div>
+      <div id="lokasi" class="tab-content">
+        <h2><b>Peta Lokasi</b></h2>
+        <div id="map" style="height: 500px; width: 100%; border-radius: 10px;"></div>
+      </div>
 
     </div>
   </div>
@@ -213,7 +207,6 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    // Warna background geospasial
     const warnaGeospasial = ["#e0f7fa", "#dcedc8", "#ffe0b2", "#f0f4c3", "#c8e6c9"];
     let indexWarna = 0;
     function ubahWarna() {
@@ -221,7 +214,6 @@
       indexWarna = (indexWarna + 1) % warnaGeospasial.length;
     }
 
-    // Toast sapaan
     function sapa() {
       const toast = document.getElementById("toast");
       toast.textContent = "Selamat datang di dunia Geodesi! 📡 - Shifa";
@@ -229,13 +221,28 @@
       setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3500);
     }
 
-    // Navigasi tab
+    let mapInitialized = false;
     function tampilkanTab(id) {
       const tabs = document.querySelectorAll(".tab-content");
       tabs.forEach(tab => tab.classList.remove("active"));
       document.getElementById(id).classList.add("active");
+
+      if (id === "lokasi" && !mapInitialized) {
+        var map = L.map('map').setView([-7.7707, 110.3771], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.marker([-7.7707, 110.3771]).addTo(map).bindPopup("Fakultas Teknik");
+        L.marker([-7.7666, 110.37744]).addTo(map).bindPopup("Fakultas Geografi");
+        L.marker([-7.76806, 110.37608]).addTo(map).bindPopup("Fakultas Biologi");
+        L.marker([-7.76806, 110.37659]).addTo(map).bindPopup("Fakultas MIPA");
+        L.marker([-7.76677, 110.37960]).addTo(map).bindPopup("Fakultas Agro");
+
+        mapInitialized = true;
+      }
     }
-  </script>
+
 
 </body>
 </html>
